@@ -1,15 +1,15 @@
-# Application configuration
-src/main/resources/application.properties
-src/main/resources/application.yml
-src/main/resources/application.yaml
+# Application configuration files
+**/src/main/resources/application.properties
+**/src/main/resources/application.yml
+**/src/main/resources/application.yaml
 
 # Maven
-target/
+**/target/
 
 # Eclipse
-.classpath
-.project
-.settings/
+**/.classpath
+**/.project
+**/.settings/
 
 # Logs
 *.log
