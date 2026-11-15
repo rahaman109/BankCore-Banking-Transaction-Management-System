@@ -19,7 +19,7 @@ import com.alpha.customerservice.responseDto.ResponseStructure;
 public class CustomerService {
 
 	// Constructor DI
-	final private CustomerRepository customerRepository;
+	private final CustomerRepository customerRepository;
 
 	public CustomerService(CustomerRepository customerRepository) {
 		this.customerRepository = customerRepository;
@@ -27,20 +27,16 @@ public class CustomerService {
 
 	// customer registration
 	public ResponseStructure<CustomerResponseDto> customerRegistration(CustomerDto customerDto) {
-		
-		if(customerRepository.existsByEmail(customerDto.getEmail()))
-		{
-			throw new CustomerEmailAlreadyExistExcepion(
-					 "Email already exists: " + customerDto.getEmail());
-		}
-		
-		if(customerRepository.existsByMobileNumber(customerDto.getMobileNumber()))
-		{
-			throw new CustomerNumberAlreadyExistException(
-					"Mobile number exists: " + customerDto.getMobileNumber());
+
+		if (customerRepository.existsByEmail(customerDto.getEmail())) {
+			throw new CustomerEmailAlreadyExistExcepion("Email already exists: " + customerDto.getEmail());
 		}
 
-	    Customer customer = new Customer();
+		if (customerRepository.existsByMobileNumber(customerDto.getMobileNumber())) {
+			throw new CustomerNumberAlreadyExistException("Mobile number exists: " + customerDto.getMobileNumber());
+		}
+
+		Customer customer = new Customer();
 
 		customer.setCustomerName(customerDto.getCustomerName());
 		customer.setEmail(customerDto.getEmail());
@@ -62,21 +58,18 @@ public class CustomerService {
 	public ResponseStructure<List<CustomerResponseDto>> getAllCustomers() {
 
 		List<Customer> customers = customerRepository.findAll();
-		
+
 		List<CustomerResponseDto> responseDto = new ArrayList<CustomerResponseDto>();
-		
-		for (Customer customer: customers) {
-			
+
+		for (Customer customer : customers) {
+
 			CustomerResponseDto response = new CustomerResponseDto();
 			response.setCustomerId(customer.getCustomerId());
 			response.setCustomerName(customer.getCustomerName());
 			responseDto.add(response);
 		}
-		
-		return new ResponseStructure<>(
-				HttpStatus.OK.value(),
-				"Here All customers",
-				responseDto);
+
+		return new ResponseStructure<>(HttpStatus.OK.value(), "Here All customers", responseDto);
 	}
 
 	// get customer by id
@@ -99,19 +92,15 @@ public class CustomerService {
 		Customer customer = customerRepository.findById(customerId)
 				.orElseThrow(() -> new CustomerNotFoundException("Customer not exist, Customer ID: " + customerId));
 
-	    if (customerRepository.existsByEmailAndCustomerIdNot(
-	            customerDto.getEmail(), customerId)) {
+		if (customerRepository.existsByEmailAndCustomerIdNot(customerDto.getEmail(), customerId)) {
 
-	        throw new CustomerEmailAlreadyExistExcepion(
-	                "Email already exists: " + customerDto.getEmail());
-	    }
+			throw new CustomerEmailAlreadyExistExcepion("Email already exists: " + customerDto.getEmail());
+		}
 
-	    if (customerRepository.existsByMobileNumberAndCustomerIdNot(
-	            customerDto.getMobileNumber(), customerId)) {
+		if (customerRepository.existsByMobileNumberAndCustomerIdNot(customerDto.getMobileNumber(), customerId)) {
 
-	        throw new CustomerNumberAlreadyExistException(
-	                "Mobile number exists: " + customerDto.getMobileNumber());
-	    }
+			throw new CustomerNumberAlreadyExistException("Mobile number exists: " + customerDto.getMobileNumber());
+		}
 		customer.setCustomerName(customerDto.getCustomerName());
 		customer.setAddress(customerDto.getAddress());
 		customer.setEmail(customerDto.getEmail());

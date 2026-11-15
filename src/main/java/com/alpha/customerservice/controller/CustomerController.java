@@ -22,48 +22,41 @@ import jakarta.validation.Valid;
 @RequestMapping("/customer")
 public class CustomerController {
 
-	
 	// constructor DI
-	final private CustomerService customerService;
-	
-	public CustomerController(CustomerService customerService)
-	{
+	private final CustomerService customerService;
+
+	public CustomerController(CustomerService customerService) {
 		this.customerService = customerService;
 	}
-	
-	
+
 	// registration
 	@PostMapping("/registration")
-	public ResponseStructure<CustomerResponseDto> customerRegistration(@Valid @RequestBody CustomerDto customerDto)
-	{
+	public ResponseStructure<CustomerResponseDto> customerRegistration(@Valid @RequestBody CustomerDto customerDto) {
 		return customerService.customerRegistration(customerDto);
 	}
-	
+
 	// get all customers
 	@GetMapping("/getallcustomers")
-	public ResponseStructure<List<CustomerResponseDto>> getAllCustomers()
-	{
-		 return customerService.getAllCustomers();
+	public ResponseStructure<List<CustomerResponseDto>> getAllCustomers() {
+		return customerService.getAllCustomers();
 	}
-	
+
 	// get customer by id
 	@GetMapping("/getcustomerbyid")
-	public ResponseStructure<CustomerResponseDto> getCustomerById(@RequestParam int customerId)
-	{
+	public ResponseStructure<CustomerResponseDto> getCustomerById(@RequestParam int customerId) {
 		return customerService.getCustomerById(customerId);
 	}
-	
-	// update customer 
+
+	// update customer
 	@PutMapping("/update")
-	public ResponseStructure<CustomerResponseDto> updateCustomer(@Valid @RequestParam int customerId, @RequestBody CustomerDto customerDto)
-	{ 
+	public ResponseStructure<CustomerResponseDto> updateCustomer(@Valid @RequestParam int customerId,
+			@RequestBody CustomerDto customerDto) {
 		return customerService.updateCustomer(customerId, customerDto);
 	}
-	
-	// delete customer 
+
+	// delete customer
 	@DeleteMapping("/delete")
-	public ResponseStructure<CustomerResponseDto> deleteCustomer(@RequestParam int customerId)
-	{
+	public ResponseStructure<CustomerResponseDto> deleteCustomer(@RequestParam int customerId) {
 		return customerService.deleteCustomer(customerId);
 	}
 }
